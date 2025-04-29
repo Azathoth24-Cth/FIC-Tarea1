@@ -105,6 +105,7 @@ def Punto1(Muestras, Componentes, Etiquetas):
     return
 
 def Punto2(Muestras, Componentes, Etiquetas):
+    ##Revisar las diapositias del 1 de abril
     # Implementa una red neuronal monocapa con algoritmo de entrenamiento Perceptron (de
     # bolsillo), de tal manera que se diferencie entre aves y otras especies.
     print("\n" + "="*50)
@@ -113,7 +114,7 @@ def Punto2(Muestras, Componentes, Etiquetas):
     entradas = Muestras
     objetivos_originales = Etiquetas
     # Codificar las etiquetas a 0 y 1 (asumiendo 1 es no-ave, 2 es ave)
-    objetivos_codificados = np.array([1 if etiq == 2 else 0 for etiq in objetivos_originales])
+    objetivos_codificados = np.array([1 if etiq == 2 else -1 for etiq in objetivos_originales])
 
     x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos_codificados)
     Modelo = PerceptronBolsillo(n_entradas=len(Componentes), tasa_aprendizaje=0.05, max_iter=10000)
