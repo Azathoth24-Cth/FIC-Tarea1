@@ -171,5 +171,5 @@ def Punto3(Muestras, Componentes, Etiquetas):
     return
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
 #Punto1(Muestras, Componentes, Etiquetas1)
-Punto2(Muestras, Componentes, Etiquetas1)
-#Punto3(Muestras, Componentes, Etiquetas1)
+#Punto2(Muestras, Componentes, Etiquetas1)
+Punto3(Muestras, Componentes, Etiquetas1)

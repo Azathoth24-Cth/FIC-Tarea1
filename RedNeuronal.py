@@ -139,9 +139,9 @@ class RedNeuronal:
                     self.tasa_aprendizaje * gradiente_pesos,
                     self.tasa_aprendizaje * gradiente_bias
                 )
-        if len(self.errores)>1:
-            if np.abs(self.errores[-1]-self.errores[-2])<0.001:
-                self.tasa_aprendizaje*=1.05
+        #if len(self.errores)>1:
+        #    if np.abs(self.errores[-1]-self.errores[-2])<0.001:
+        #        self.tasa_aprendizaje*=1.05
         return
     def entrenar_y_graficar(self, entradas, objetivos, epocas, titulo):
         x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos)
