@@ -20,7 +20,7 @@ def LMS_monocapa(x, y, mu, max_epochs, epsilon):
         raise ValueError("Se requieren exactamente dos clases para clasificación binaria.")
     
     # Umbral adaptativo: punto medio entre las dos clases
-    threshold = 1.6
+    threshold =1.2815
     positive_class, negative_class = classes[1], classes[0]
     
     # Inicialización de pesos
@@ -99,7 +99,7 @@ def Punto1(Muestras, Componentes, Etiquetas):
     #Implemente una red neuronal monocapa con algoritmo LMS, de tal manera que se diferencie
     #entre aves y otras especies.
     mu= 0.01       # Tasa de aprendizaje
-    max_epochs = 500
+    max_epochs = 5000
     epsilon = 1e-5   # Criterio de parada
     LMS_monocapa(Muestras, Etiquetas, mu, max_epochs, epsilon)
     return
@@ -116,7 +116,7 @@ def Punto2(Muestras, Componentes, Etiquetas):
     objetivos_codificados = np.array([1 if etiq == 2 else 0 for etiq in objetivos_originales])
 
     x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos_codificados)
-    Modelo = PerceptronBolsillo(n_entradas=len(Componentes), tasa_aprendizaje=0.2, max_iter=10000)
+    Modelo = PerceptronBolsillo(n_entradas=len(Componentes), tasa_aprendizaje=0.05, max_iter=10000)
     historial_errores = Modelo.train(x_train, y_train)
 
     y_pred_test = Modelo.predict(x_test)

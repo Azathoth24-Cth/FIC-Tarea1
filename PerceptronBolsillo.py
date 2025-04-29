@@ -1,9 +1,8 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 class PerceptronBolsillo:
     def __init__(self, n_entradas, tasa_aprendizaje=0.1, max_iter=1000):
-        self.w = np.zeros(n_entradas + 1) # Weights including bias (w[0])
+        self.w = np.ones(n_entradas + 1) # Weights including bias (w[0])
         self.learning_rate = tasa_aprendizaje
         self.max_iter = max_iter
         self.best_w = self.w.copy()
