@@ -169,7 +169,22 @@ def Punto3(Muestras, Componentes, Etiquetas):
     red = RN(topologia, tasa_aprendizaje=1)
     red.entrenar_y_graficar(Muestras, Etiquetas, 5000, "Clasificación Aves -Otras Especies: backpropagation")
     return
+def Punto4():
+    #Implemente/entrene una red neuronal convolucional que permita diferenciar entre aves y otras
+    #especies usando las imágenes proporcionadas en el siguiente enlace:
+    #https://drive.google.com/drive/folders/1X_gZM_jRXcZS2kHxk158eksqvh1N0Ul4?usp=sharing
+    #En este caso, la distribución de imagen por cada género corresponde a:
+    #Artiodactyla: 643 imágenes
+    #Carnivora: 546 imágenes
+    #Cingulata: 469 imágenes
+    #Pilosa: 204 imágenes
+    #Rodentia: 1150 imágenes
+    #Aves: 1272 imágenes
+    
+    return
+
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
 #Punto1(Muestras, Componentes, Etiquetas1)
 #Punto2(Muestras, Componentes, Etiquetas1)
-Punto3(Muestras, Componentes, Etiquetas1)
+#Punto3(Muestras, Componentes, Etiquetas1)
+Punto4()
