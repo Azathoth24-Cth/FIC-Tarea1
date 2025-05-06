@@ -166,7 +166,7 @@ def Punto3(Muestras, Componentes, Etiquetas):
     print("ENTRENANDO")
     print("="*50)
     topologia = [9,7,5,3,1]
-    red = RN(topologia, tasa_aprendizaje=0.5)
+    red = RN(topologia, tasa_aprendizaje=1)
     red.entrenar_y_graficar(Muestras, Etiquetas, 5000, "Clasificación Aves -Otras Especies: backpropagation")
     return
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
