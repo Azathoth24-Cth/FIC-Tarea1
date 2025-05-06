@@ -7,6 +7,10 @@ Created on Wed Apr 16 13:22:44 2025
 import numpy as np
 import pandas as pd
 
+#para el punto #4
+import os 
+from PIL import Image 
+
 def CargarDatos():
     ruta = "DatosConClases.xlsx"
     dataFrame = pd.read_excel(ruta)
@@ -75,3 +79,49 @@ def divisionDatos(x, y, rate=0.2,seed=42):
     y_test = y_test[indices_test]
 
     return x_train, y_train, x_test, y_test
+
+
+
+def CargarBaseDeDatosImagenes():
+    X = []
+    Y = []
+    
+    # Get the path to the HW1 directory (sibling of current directory)
+    base_dir = os.path.join(os.path.dirname(__file__), 'HW1')
+    
+    # Define the class folders and their corresponding labels
+    class_folders = {
+        'Aves': 0,
+        'Artiodactyla': 1,
+        'Carnivora': 1,
+        'Cingulata': 1,
+        'Pilosa': 1,
+        'Rodentia': 1
+    }
+    
+    # Iterate through each class folder
+    for folder_name, label in class_folders.items():
+        folder_path = os.path.join(base_dir, folder_name)
+        
+        # Check if the folder exists
+        if not os.path.exists(folder_path):
+            continue
+            
+        # Iterate through all files in the folder
+        for filename in os.listdir(folder_path):
+            if filename.lower().endswith('.jpg'):
+                # Construct the full file path
+                file_path = os.path.join(folder_path, filename)
+                
+                try:
+                    # Open the image and convert it to RGB (in case it's grayscale)
+                    img = Image.open(file_path).convert('RGB')
+                    
+                    # Convert image to numpy array and add to X
+                    # Note: You might want to resize images to a consistent size here
+                    X.append(np.array(img))
+                    Y.append(label)
+                except Exception as e:
+                    print(f"Error loading image {file_path}: {e}")
+    
+    return np.array(X), np.array(Y)

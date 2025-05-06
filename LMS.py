@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from RedNeuronal import RedNeuronal as RN
 from PerceptronBolsillo import PerceptronBolsillo
 from Auxiliar import CargarDatos, divisionDatos
+from Auxiliar import CargarBaseDeDatosImagenes
 
 def LMS_monocapa(x, y, mu, max_epochs, epsilon):
     # División de datos (asumiendo que divisionDatos está definida)
@@ -180,7 +181,7 @@ def Punto4():
     #Pilosa: 204 imágenes
     #Rodentia: 1150 imágenes
     #Aves: 1272 imágenes
-    
+    X, y = CargarBaseDeDatosImagenes()
     return
 
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
