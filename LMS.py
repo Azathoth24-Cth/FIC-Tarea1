@@ -24,7 +24,7 @@ def LMS_monocapa(x, y, mu, max_epochs, epsilon):
         raise ValueError("Se requieren exactamente dos clases para clasificación binaria.")
     
     # Umbral adaptativo: punto medio entre las dos clases
-    threshold =1.2815
+    threshold =1.281
     positive_class, negative_class = classes[1], classes[0]
     
     # Inicialización de pesos
@@ -110,7 +110,7 @@ def Punto1(Muestras, Componentes, Etiquetas):
 
 def Punto2(Muestras, Componentes, Etiquetas):
     print("\n" + "="*50)
-    print("ENTRENANDO (Versión Diagrama de Flujo)")
+    print("ENTRENANDO")
     print("="*50)
     entradas = Muestras
     objetivos_originales = Etiquetas
@@ -118,7 +118,7 @@ def Punto2(Muestras, Componentes, Etiquetas):
     objetivos_codificados = np.array([-1 if etiq == 1 else 1 for etiq in objetivos_originales])
 
     x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos_codificados, seed=42)
-    Modelo = PerceptronBolsillo(n_entradas=len(Componentes), learning_rate=0.1, max_iter=1000)
+    Modelo = PerceptronBolsillo(n_entradas=len(Componentes), learning_rate=0.1, max_iter=100000)
     historial_errores = Modelo.train(x_train, y_train)
 
     y_pred_test = Modelo.predict(x_test)
@@ -251,6 +251,6 @@ def Punto4():
 
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
 #Punto1(Muestras, Componentes, Etiquetas1)
-Punto2(Muestras, Componentes, Etiquetas1)
+#Punto2(Muestras, Componentes, Etiquetas1)
 #Punto3(Muestras, Componentes, Etiquetas1)
-#Punto4()
+Punto4()
