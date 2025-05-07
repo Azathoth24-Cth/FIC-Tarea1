@@ -82,7 +82,7 @@ def divisionDatos(x, y, rate=0.2,seed=42):
 
 
 
-def CargarBaseDeDatosImagenes():
+def CargarBaseDeDatosImagenes(target_size=(224, 224)):
     X = []
     Y = []
     
@@ -115,13 +115,18 @@ def CargarBaseDeDatosImagenes():
                 
                 try:
                     # Open the image and convert it to RGB (in case it's grayscale)
-                    img = Image.open(file_path).convert('RGB')
-                    
+                    # Inside the try block, replace the img loading with:
+                    img = Image.open(file_path).convert('L')
+                    try:
+                        img = img.resize(target_size)
+                    except:
+                        continue
                     # Convert image to numpy array and add to X
                     # Note: You might want to resize images to a consistent size here
                     X.append(np.array(img))
                     Y.append(label)
                 except Exception as e:
                     print(f"Error loading image {file_path}: {e}")
-    
+            else:
+                print(filename.lower())
     return np.array(X), np.array(Y)

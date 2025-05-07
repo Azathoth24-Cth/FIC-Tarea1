@@ -10,7 +10,10 @@ from RedNeuronal import RedNeuronal as RN
 from PerceptronBolsillo import PerceptronBolsillo
 from Auxiliar import CargarDatos, divisionDatos
 from Auxiliar import CargarBaseDeDatosImagenes
+import tensorflow as tf
+from tensorflow.keras import layers, models,regularizers
 
+from sklearn.model_selection import train_test_split
 def LMS_monocapa(x, y, mu, max_epochs, epsilon):
     # División de datos (asumiendo que divisionDatos está definida)
     x_train, y_train, x_test, y_test = divisionDatos(x, y, 0.2)
@@ -181,8 +184,66 @@ def Punto4():
     #Pilosa: 204 imágenes
     #Rodentia: 1150 imágenes
     #Aves: 1272 imágenes
-    X, y = CargarBaseDeDatosImagenes()
-    return
+    # 1. Cargar y preprocesar datos
+    X, y = CargarBaseDeDatosImagenes(target_size=(250, 250))  # Tamaño recomendado para CNNs
+    X = X / 255.0  # Normalizar píxeles [0, 1]
+    X = np.expand_dims(X, axis=-1)
+    # 2. Dividir datos (80% train, 20% test)
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    X_train, y_train, X_test, y_test = divisionDatos(X, y, seed=42)
+    # 3. Definir arquitectura CNN
+    model = models.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(250, 250, 1)),  # Primera capa convolucional
+        layers.MaxPooling2D((2, 2)),
+        
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        
+        layers.Conv2D(128, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        
+        layers.Flatten(),
+        layers.Dense(64, activation='relu',
+                     kernel_regularizer=regularizers.l2(0.01)),
+        layers.Dense(1, activation='sigmoid')  # Salida binaria (aves vs. otras)
+    ])
+    
+    # 4. Compilar el modelo
+    model.compile(optimizer='adam',
+                 loss='binary_crossentropy',
+                 metrics=['accuracy'])
+    
+    # 5. Entrenar y graficar
+    history = model.fit(X_train, y_train, 
+                        epochs=20, 
+                        batch_size=32,
+                        validation_data=(X_test, y_test))
+    
+    # 6. Graficar Pérdida (Loss) y Accuracy
+    plt.figure(figsize=(12, 5))
+    
+    # Gráfica de Pérdida
+    plt.subplot(1, 2, 1)
+    plt.plot(history.history['loss'], label='Train Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.title('Pérdida por Época')
+    plt.xlabel('Épocas')
+    plt.ylabel('Pérdida (Loss)')
+    plt.legend()
+
+    # Gráfica de Accuracy
+    plt.subplot(1, 2, 2)
+    plt.plot(history.history['accuracy'], label='Train Accuracy')
+    plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+    plt.title('Precisión por Época')
+    plt.xlabel('Épocas')
+    plt.ylabel('Accuracy')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+    
+    return model
 
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
 #Punto1(Muestras, Componentes, Etiquetas1)

@@ -34,10 +34,15 @@ class RedNeuronal:
     
     def _sigmoide(self, x):
         """Función de activación sigmoide"""
+        # Para evitar overflow, se utiliza np.clip para limitar el rango de x
+        x = np.clip(x, -500, 500)
         return 1 / (1 + np.exp(-x))
     
     def _derivada_sigmoide(self, x):
         """Derivada de la función sigmoide"""
+        #para evitar overflow, se utiliza np.clip para limitar el rango de x
+        x = np.clip(x, -500, 500)
+        
         sig = self._sigmoide(x)
         return sig * (1 - sig)
     
@@ -143,6 +148,7 @@ class RedNeuronal:
         #    if np.abs(self.errores[-1]-self.errores[-2])<0.001:
         #        self.tasa_aprendizaje*=1.05
         return
+    
     def entrenar_y_graficar(self, entradas, objetivos, epocas, titulo):
         x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos)
         errores_epoca = []
