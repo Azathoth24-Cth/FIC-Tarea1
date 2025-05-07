@@ -11,7 +11,7 @@ from PerceptronBolsillo import PerceptronBolsillo
 from Auxiliar import CargarDatos, divisionDatos
 from Auxiliar import CargarBaseDeDatosImagenes
 import tensorflow as tf
-from tensorflow.keras import layers, models,regularizers
+from tensorflow.python.keras import layers, models,regularizers
 
 from sklearn.model_selection import train_test_split
 def LMS_monocapa(x, y, mu, max_epochs, epsilon):
@@ -109,19 +109,16 @@ def Punto1(Muestras, Componentes, Etiquetas):
     return
 
 def Punto2(Muestras, Componentes, Etiquetas):
-    ##Revisar las diapositias del 1 de abril
-    # Implementa una red neuronal monocapa con algoritmo de entrenamiento Perceptron (de
-    # bolsillo), de tal manera que se diferencie entre aves y otras especies.
     print("\n" + "="*50)
-    print("ENTRENANDO")
+    print("ENTRENANDO (Versión Diagrama de Flujo)")
     print("="*50)
     entradas = Muestras
     objetivos_originales = Etiquetas
-    # Codificar las etiquetas a 0 y 1 (asumiendo 1 es no-ave, 2 es ave)
-    objetivos_codificados = np.array([1 if etiq == 2 else -1 for etiq in objetivos_originales])
+    # Codificar las etiquetas a -1 y +1 (1 -> -1, 2 -> +1)
+    objetivos_codificados = np.array([-1 if etiq == 1 else 1 for etiq in objetivos_originales])
 
-    x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos_codificados)
-    Modelo = PerceptronBolsillo(n_entradas=len(Componentes), tasa_aprendizaje=0.05, max_iter=10000)
+    x_train, y_train, x_test, y_test = divisionDatos(entradas, objetivos_codificados, seed=42)
+    Modelo = PerceptronBolsillo(n_entradas=len(Componentes), learning_rate=0.1, max_iter=1000)
     historial_errores = Modelo.train(x_train, y_train)
 
     y_pred_test = Modelo.predict(x_test)
@@ -129,9 +126,9 @@ def Punto2(Muestras, Componentes, Etiquetas):
     accuracy = np.mean(y_pred_test == y_test)
 
     tp = np.sum((y_pred_test == 1) & (y_test == 1))
-    tn = np.sum((y_pred_test == 0) & (y_test == 0))
-    fp = np.sum((y_pred_test == 1) & (y_test == 0))
-    fn = np.sum((y_pred_test == 0) & (y_test == 1))
+    tn = np.sum((y_pred_test == -1) & (y_test == -1))
+    fp = np.sum((y_pred_test == 1) & (y_test == -1))
+    fn = np.sum((y_pred_test == -1) & (y_test == 1))
 
     sensibilidad = tp / (tp + fn) if (tp + fn) > 0 else 0
     especificidad = tn / (tn + fp) if (tn + fp) > 0 else 0
@@ -145,7 +142,7 @@ def Punto2(Muestras, Componentes, Etiquetas):
     plt.plot(range(1, len(historial_errores) + 1), historial_errores, marker='o')
     plt.title('Historial de Error durante el Entrenamiento')
     plt.xlabel('Época')
-    plt.ylabel('Error (1 - Accuracy)')
+    plt.ylabel('Error Promedio por Época')
     plt.grid(True)
 
     metricas = ['Accuracy', 'Sensibilidad', 'Especificidad']
@@ -158,6 +155,13 @@ def Punto2(Muestras, Componentes, Etiquetas):
     plt.ylim([0, 1])
     for i, v in enumerate(valores):
         plt.text(i, v + 0.01, f'{v:.4f}', ha='center')
+    
+    plt.figure(figsize=(8, 5))
+    plt.hist(historial_errores, bins=50, color='steelblue', edgecolor='black')
+    plt.title('Distribución del Error durante el Entrenamiento')
+    plt.xlabel('Error Promedio por Época')
+    plt.ylabel('Frecuencia')
+    plt.grid(True)
     plt.show()
 
     return
@@ -247,6 +251,6 @@ def Punto4():
 
 Muestras, Componentes, Etiquetas1, Etiquetas2, Etiquetas3 = CargarDatos()
 #Punto1(Muestras, Componentes, Etiquetas1)
-#Punto2(Muestras, Componentes, Etiquetas1)
+Punto2(Muestras, Componentes, Etiquetas1)
 #Punto3(Muestras, Componentes, Etiquetas1)
-Punto4()
+#Punto4()
